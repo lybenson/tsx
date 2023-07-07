@@ -18,6 +18,10 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
