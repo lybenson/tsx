@@ -3,8 +3,6 @@ import path from 'node:path'
 
 export function isEmpty(path) {
   const files = fs.readdirSync(path)
-
-  console.log(files)
   return files.length === 0 || (files.length === 1 && files[0] === '.git')
 }
 

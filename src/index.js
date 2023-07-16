@@ -125,7 +125,7 @@ async function main() {
   }
 
   try {
-    shell.exec(`cd ${path.relative(cwd, root)} && git init`)
+    shell.exec(`cd ${path.relative(cwd, root)}`)
   } catch (error) {
     console.error(error)
   }
@@ -135,7 +135,7 @@ async function main() {
       console.log('  yarn')
       break
     default:
-      console.log(`  ${pkgManager} i`)
+      console.log(`  ${pkgManager} i\n`)
 
       break
   }
