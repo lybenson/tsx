@@ -96,9 +96,6 @@ async function main() {
   }
   const { packageName, isGit } = result
 
-  console.log('isGit')
-  console.log(isGit)
-
   let templateName = 'template'
 
   // get project root dir
