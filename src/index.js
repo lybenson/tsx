@@ -14,7 +14,8 @@ import {
   toValidPackageName,
   write,
   writeContent,
-  pkgFromUserAgent
+  pkgFromUserAgent,
+  isGitPackage
 } from './utils.js'
 import { DEFAULT_TARGET_DIR } from './const.js'
 import shell from './shell.js'
@@ -26,7 +27,7 @@ const cwd = process.cwd()
 
 // main function
 async function main() {
-  let targetDir = formatTargetDir(argv._[0])
+  let targetDir = formatTargetDir(argv._[0]) || DEFAULT_TARGET_DIR
 
   const getProjectName = () => {
     return targetDir === '.' ? path.basename(path.resolve()) : targetDir
@@ -34,7 +35,7 @@ async function main() {
 
   const questions = [
     {
-      type: targetDir ? null : 'text',
+      type: targetDir !== DEFAULT_TARGET_DIR ? null : 'text',
       name: 'projectName',
       message: reset('Project name:'),
       initial: DEFAULT_TARGET_DIR,
@@ -66,6 +67,13 @@ async function main() {
       name: 'overwriteChecker'
     },
     {
+      type: isGitPackage(targetDir) ? null : 'confirm',
+      name: 'isGit',
+      initial: 'y',
+      message: 'Is it a git project? husky will be used if yes.',
+      when: () => true
+    },
+    {
       type: () => (isValidPackageName(getProjectName()) ? null : 'text'),
       name: 'packageName',
       message: reset('Package name: '),
@@ -86,13 +94,20 @@ async function main() {
   } catch (cancelled) {
     return
   }
-  const { overwrite, packageName, language, points } = result
+  const { packageName, isGit } = result
+
+  console.log('isGit')
+  console.log(isGit)
 
   let templateName = 'template'
 
   // get project root dir
   const root = path.join(cwd, targetDir)
   if (!fs.existsSync(root)) fs.mkdirSync(root, { recursive: true })
+
+  if (isGit) {
+    shell.exec('git init')
+  }
 
   const templateDir = path.resolve(
     fileURLToPath(import.meta.url),
@@ -102,8 +117,16 @@ async function main() {
 
   const files = fs.readdirSync(templateDir)
 
-  // write all files to root dir, except for package.json
+  // write all files to root dir
   for (const file of files) {
+    // if git package .huasky and .commitlintrc.cjs will be ignore
+    if (
+      !isGit &&
+      (file === '.husky' ||
+        file === '.commitlintrc.cjs' ||
+        file === '.gitignore')
+    )
+      continue
     write(templateDir, root, file)
   }
 
@@ -111,8 +134,16 @@ async function main() {
   const pkg = JSON.parse(
     fs.readFileSync(path.join(templateDir, 'package.json'), 'utf-8')
   )
-  pkg.name = packageName || getProjectName()
+  if (!isGit) {
+    delete pkg.scripts
+    delete pkg['lint-staged']
+    delete pkg.devDependencies['@commitlint/cli']
+    delete pkg.devDependencies['@commitlint/config-conventional']
+    delete pkg.devDependencies['husky']
+    delete pkg.devDependencies['lint-staged']
+  }
 
+  pkg.name = packageName || getProjectName()
   writeContent(root, 'package.json', JSON.stringify(pkg, null, 2))
 
   const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
