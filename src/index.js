@@ -102,7 +102,8 @@ async function main() {
   const root = path.join(cwd, targetDir)
   if (!fs.existsSync(root)) fs.mkdirSync(root, { recursive: true })
 
-  if (isGit) {
+  const isGitProject = isGitPackage(targetDir) || isGit
+  if (isGitProject) {
     shell.exec('git init')
   }
 
@@ -118,7 +119,7 @@ async function main() {
   for (const file of files) {
     // if git package .huasky and .commitlintrc.cjs will be ignore
     if (
-      !isGit &&
+      !isGitProject &&
       (file === '.husky' ||
         file === '.commitlintrc.cjs' ||
         file === '.gitignore')
@@ -131,7 +132,7 @@ async function main() {
   const pkg = JSON.parse(
     fs.readFileSync(path.join(templateDir, 'package.json'), 'utf-8')
   )
-  if (!isGit) {
+  if (!isGitProject) {
     delete pkg.scripts
     delete pkg['lint-staged']
     delete pkg.devDependencies['@commitlint/cli']
