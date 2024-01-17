@@ -11,6 +11,14 @@ bun i @heapup/tsx -g
 pnpm i @heapup/tsx -g
 ```
 
+## Update
+
+```shell
+bun update @heapup/tsx -g
+# or
+pnpm update @heapup/tsx -g
+```
+
 ## Usage
 
 ```
