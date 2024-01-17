@@ -2,13 +2,19 @@
 
 Install the **Code Runner** plugin for VSCode
 
-Then use pnpm(recommend), npm, or yarn to install the dependencies.
+Then install dependencies:
 
 ```
-pnpm i
+bun i
 ```
 
 Open ts file and click on the run button in the top right corner of the window.
+
+Or
+
+```bash
+bun run src/main.ts
+```
 
 ## Issue
 
