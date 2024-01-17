@@ -1,20 +1,18 @@
-# 纯 TS 脚手架
+# TypeScript StartKit
 
-- [x] 支持 prettier eslint
-- [x] vscode 安装 code runner 插件可直接运行 ts 文件
+- Support prettier eslint
+- Installing the Code Runner plugin in VSCode allows for directly running TypeScript files.
 
-clone ts-pure
+## Install
 
-```
-git clone https://github.com/lybenson/ts-pure
-
-cd ts-pure
-bun i
-bun link
+```shell
+bun i @heapup/tsx -g
+# or
+pnpm i @heapup/tsx -g
 ```
 
 ## Usage
 
 ```
-ts-cli <work dir or .>
+tsx <work dir or .>
 ```
