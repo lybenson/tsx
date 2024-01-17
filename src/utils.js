@@ -2,8 +2,13 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 export function isGitPackage(path) {
-  const files = fs.readdirSync(path)
-  return files.findIndex((item) => item === '.git') !== -1
+  try {
+    const files = fs.readdirSync(path)
+    if (files.length === 0) return false
+    return files.findIndex((item) => item === '.git') !== -1
+  } catch (error) {
+    return false
+  }
 }
 
 export function isEmpty(path) {

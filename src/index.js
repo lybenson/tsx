@@ -67,7 +67,10 @@ async function main() {
       name: 'overwriteChecker'
     },
     {
-      type: isGitPackage(targetDir) ? null : 'confirm',
+      type: (targetDir) => {
+        const root = path.join(cwd, targetDir)
+        return isGitPackage(root) ? null : 'confirm'
+      },
       name: 'isGit',
       initial: 'y',
       message: 'Is it a git project? husky will be used if yes.',
@@ -98,13 +101,14 @@ async function main() {
 
   let templateName = 'template'
 
+  console.log('cwd', cwd)
   // get project root dir
   const root = path.join(cwd, targetDir)
   if (!fs.existsSync(root)) fs.mkdirSync(root, { recursive: true })
 
   const isGitProject = isGitPackage(targetDir) || isGit
   if (isGitProject) {
-    shell.exec('git init')
+    shell.exec(`cd ${root} && git init`)
   }
 
   const templateDir = path.resolve(
@@ -145,7 +149,7 @@ async function main() {
   writeContent(root, 'package.json', JSON.stringify(pkg, null, 2))
 
   const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
-  const pkgManager = pkgInfo ? pkgInfo.name : 'pnpm'
+  const pkgManager = pkgInfo ? pkgInfo.name : 'bun'
 
   console.log(`\nDone. Now run:\n`)
 

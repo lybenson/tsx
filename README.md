@@ -9,8 +9,8 @@ clone ts-pure
 git clone https://github.com/lybenson/ts-pure
 
 cd ts-pure
-npm install
-npm link
+bun i
+bun link
 ```
 
 ## Usage
