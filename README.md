@@ -22,5 +22,5 @@ pnpm update @heapup/tsx -g
 ## Usage
 
 ```
-tsx <work dir or .>
+tsx
 ```
