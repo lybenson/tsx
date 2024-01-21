@@ -1,6 +1,6 @@
 {
   "name": "@heapup/tsx",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "license": "MIT",
   "author": "lybenson",
@@ -9,7 +9,8 @@
   },
   "files": [
     "src/*",
-    "template/*"
+    "template/*",
+    "template/.gitignore"
   ],
   "main": "src/index.js",
   "dependencies": {
