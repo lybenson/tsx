@@ -18,8 +18,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,ts,cjs}": [
-      "prettier -w",
-      "eslint --fix"
+      "prettier -w"
     ]
   }
 }
