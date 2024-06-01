@@ -6,12 +6,12 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.4",
-    "@commitlint/config-conventional": "^18.4.4",
+    "@commitlint/cli": "^19",
+    "@commitlint/config-conventional": "^19",
     "@types/bun": "latest",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.2.3"
+    "husky": "^9",
+    "lint-staged": "^15",
+    "prettier": "^3.3.0"
   },
   "peerDependencies": {
     "typescript": "^5"
